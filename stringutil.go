@@ -1,0 +1,39 @@
+// Package stringutil предоставляет утилиты для работы со строками и числами.
+package stringutil
+
+import "errors"
+
+// Reverse возвращает строку, записанную задом наперёд.
+func Reverse(s string) string {
+	r := []rune(s)
+	for i, j := 0, len(r)-1; i < j; i, j = i+1, j-1 {
+		r[i], r[j] = r[j], r[i]
+	}
+	return string(r)
+}
+
+// ToUpper преобразует все символы строки в верхний регистр.
+// Упрощение: корректно работает только для латиницы.
+func ToUpper(s string) string {
+	result := make([]rune, len([]rune(s)))
+	for i, r := range []rune(s) {
+		result[i] = r - 32
+	}
+	return string(result)
+}
+
+// Add складывает два целых числа.
+func Add(a, b int) int {
+	return a + b
+}
+
+// Divide делит a на b и возвращает ошибку при делении на ноль.
+func Divide(a, b int) (int, error) {
+	if b == 0 {
+		return 0, ErrDivisionByZero
+	}
+	return a / b, nil
+}
+
+// ErrDivisionByZero возвращается при попытке деления на ноль.
+var ErrDivisionByZero = errors.New("division by zero")
