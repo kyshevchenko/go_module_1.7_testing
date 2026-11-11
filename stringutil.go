@@ -1,7 +1,10 @@
 // Package stringutil предоставляет утилиты для работы со строками и числами.
 package stringutil
 
-import "errors"
+import (
+	"errors"
+	"sync"
+)
 
 // Reverse возвращает строку, записанную задом наперёд.
 func Reverse(s string) string {
@@ -37,3 +40,24 @@ func Divide(a, b int) (int, error) {
 
 // ErrDivisionByZero возвращается при попытке деления на ноль.
 var ErrDivisionByZero = errors.New("division by zero")
+
+// ConcurrentCounter инкрементирует счётчик из n горутин.
+// Доступ к счётчику защищён мьютексом — гонки данных нет.
+func ConcurrentCounter(n int) int {
+	var (
+		mu      sync.Mutex
+		counter int
+		wg      sync.WaitGroup
+	)
+	wg.Add(n)
+	for i := 0; i < n; i++ {
+		go func() {
+			defer wg.Done()
+			mu.Lock()
+			counter++
+			mu.Unlock()
+		}()
+	}
+	wg.Wait()
+	return counter
+}

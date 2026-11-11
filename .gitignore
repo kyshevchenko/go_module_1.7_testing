@@ -1,0 +1,7 @@
+# Покрытие тестами
+c.out
+*.out
+coverage.html
+
+# Артефакты Go
+*.test
