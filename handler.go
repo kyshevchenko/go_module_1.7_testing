@@ -7,8 +7,8 @@ import (
 	"strconv"
 )
 
-// calcResponse — формат JSON-ответа калькулятора.
-type calcResponse struct {
+// CalcResponse — формат JSON-ответа калькулятора.
+type CalcResponse struct {
 	Result int    `json:"result,omitempty"`
 	Error  string `json:"error,omitempty"`
 }
@@ -16,6 +16,15 @@ type calcResponse struct {
 // Handler — HTTP-обработчик калькулятора.
 // Параметры запроса: op (add | divide), a, b — целые числа.
 // Ответ: JSON {"result": N} при успехе или {"error": "..."} при ошибке.
+//
+//	@Summary		Выполнить арифметическую операцию
+//	@Description	Складывает (add) или делит (divide) два целых числа
+//	@Param			op	query		string	true	"Операция"	Enums(add, divide)
+//	@Param			a	query		integer	true	"Первое число"
+//	@Param			b	query		integer	true	"Второе число"
+//	@Success		200	{object}	CalcResponse
+//	@Failure		400	{object}	CalcResponse
+//	@Router			/calc [get]
 func Handler(w http.ResponseWriter, r *http.Request) {
 	a, errA := strconv.Atoi(r.URL.Query().Get("a"))
 	b, errB := strconv.Atoi(r.URL.Query().Get("b"))
@@ -42,11 +51,11 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	writeCalcJSON(w, http.StatusOK, calcResponse{Result: result})
+	writeCalcJSON(w, http.StatusOK, CalcResponse{Result: result})
 }
 
 // writeCalcJSON — отправка успешного JSON-ответа.
-func writeCalcJSON(w http.ResponseWriter, status int, resp calcResponse) {
+func writeCalcJSON(w http.ResponseWriter, status int, resp CalcResponse) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 	_ = json.NewEncoder(w).Encode(resp)
@@ -54,7 +63,7 @@ func writeCalcJSON(w http.ResponseWriter, status int, resp calcResponse) {
 
 // writeCalcError — отправка JSON-ответа с ошибкой.
 func writeCalcError(w http.ResponseWriter, status int, msg string) {
-	writeCalcJSON(w, status, calcResponse{Error: msg})
+	writeCalcJSON(w, status, CalcResponse{Error: msg})
 }
 
 // Client — HTTP-клиент калькулятора.
@@ -78,7 +87,7 @@ func (c *Client) Do(op string, a, b int) (int, error) {
 	}
 	defer func() { _ = resp.Body.Close() }()
 
-	var out calcResponse
+	var out CalcResponse
 	if err := json.NewDecoder(resp.Body).Decode(&out); err != nil {
 		return 0, fmt.Errorf("decode response: %w", err)
 	}

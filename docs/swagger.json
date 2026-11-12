@@ -1,0 +1,72 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "HTTP-калькулятор учебного пакета stringutil.",
+        "title": "stringutil Calc API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "basePath": "/",
+    "paths": {
+        "/calc": {
+            "get": {
+                "description": "Складывает (add) или делит (divide) два целых числа",
+                "summary": "Выполнить арифметическую операцию",
+                "parameters": [
+                    {
+                        "enum": [
+                            "add",
+                            "divide"
+                        ],
+                        "type": "string",
+                        "description": "Операция",
+                        "name": "op",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Первое число",
+                        "name": "a",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Второе число",
+                        "name": "b",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/stringutil.CalcResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/stringutil.CalcResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "stringutil.CalcResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}

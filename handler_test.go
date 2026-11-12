@@ -10,10 +10,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// calcResponseOf — вспомогательная функция: декодирует JSON-тело ответа.
-func calcResponseOf(t *testing.T, rec *httptest.ResponseRecorder) calcResponse {
+// CalcResponseOf — вспомогательная функция: декодирует JSON-тело ответа.
+func CalcResponseOf(t *testing.T, rec *httptest.ResponseRecorder) CalcResponse {
 	t.Helper()
-	var out calcResponse
+	var out CalcResponse
 	require.NoError(t, json.NewDecoder(rec.Body).Decode(&out))
 	return out
 }
@@ -26,7 +26,7 @@ func TestHandlerAddSuccess(t *testing.T) {
 	Handler(rec, req)
 
 	assert.Equal(t, http.StatusOK, rec.Code)
-	out := calcResponseOf(t, rec)
+	out := CalcResponseOf(t, rec)
 	assert.Equal(t, 5, out.Result)
 	assert.Empty(t, out.Error)
 }
@@ -39,7 +39,7 @@ func TestHandlerDivideSuccess(t *testing.T) {
 	Handler(rec, req)
 
 	assert.Equal(t, http.StatusOK, rec.Code)
-	out := calcResponseOf(t, rec)
+	out := CalcResponseOf(t, rec)
 	assert.Equal(t, 2, out.Result)
 }
 
@@ -51,7 +51,7 @@ func TestHandlerDivideByZero(t *testing.T) {
 	Handler(rec, req)
 
 	assert.Equal(t, http.StatusBadRequest, rec.Code)
-	out := calcResponseOf(t, rec)
+	out := CalcResponseOf(t, rec)
 	assert.Contains(t, out.Error, "division by zero")
 }
 
@@ -63,7 +63,7 @@ func TestHandlerUnknownOp(t *testing.T) {
 	Handler(rec, req)
 
 	assert.Equal(t, http.StatusBadRequest, rec.Code)
-	out := calcResponseOf(t, rec)
+	out := CalcResponseOf(t, rec)
 	assert.Contains(t, out.Error, "unsupported op")
 }
 
@@ -75,7 +75,7 @@ func TestHandlerInvalidParams(t *testing.T) {
 	Handler(rec, req)
 
 	assert.Equal(t, http.StatusBadRequest, rec.Code)
-	out := calcResponseOf(t, rec)
+	out := CalcResponseOf(t, rec)
 	assert.Contains(t, out.Error, "invalid a or b")
 }
 

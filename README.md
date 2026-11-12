@@ -87,10 +87,23 @@ Godoc-комментарии + исполняемые примеры (`ExampleRe
 7.test.stringutil/
 ├── stringutil.go        # основные функции: Reverse, ToUpper, Add, Divide, ConcurrentCounter
 ├── logger.go            # интерфейс Logger и SimpleLogger
-├── handler.go           # HTTP-калькулятор и клиент
+├── handler.go           # HTTP-калькулятор и клиент (swag-аннотации)
 ├── fileio.go            # SaveToFile
+├── cmd/calcserver/      # демо-сервер: /calc + Swagger UI на :8081
+├── docs/                # сгенерированная swagger-документация (swag init)
 ├── *_test.go            # юнит, табличные, race, benchmark, fuzz, example-тесты
 ├── testdata/fuzz/       # регресс-корпус фаззера (найденные кейсы)
 ├── .golangci.yml        # конфигурация линтера
 └── Makefile             # build / test / cover / lint / fmt / clean
 ```
+
+## Swagger
+
+```bash
+go run ./cmd/calcserver
+# API:   http://localhost:8081/calc?op=add&a=2&b=3
+# UI:    http://localhost:8081/swagger/index.html
+```
+
+Регенерация документации после изменения аннотаций:
+`~/go/bin/swag init -g cmd/calcserver/main.go -o docs`

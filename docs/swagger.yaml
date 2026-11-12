@@ -1,0 +1,48 @@
+basePath: /
+definitions:
+  stringutil.CalcResponse:
+    properties:
+      error:
+        type: string
+      result:
+        type: integer
+    type: object
+info:
+  contact: {}
+  description: HTTP-калькулятор учебного пакета stringutil.
+  title: stringutil Calc API
+  version: "1.0"
+paths:
+  /calc:
+    get:
+      description: Складывает (add) или делит (divide) два целых числа
+      parameters:
+      - description: Операция
+        enum:
+        - add
+        - divide
+        in: query
+        name: op
+        required: true
+        type: string
+      - description: Первое число
+        in: query
+        name: a
+        required: true
+        type: integer
+      - description: Второе число
+        in: query
+        name: b
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/stringutil.CalcResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/stringutil.CalcResponse'
+      summary: Выполнить арифметическую операцию
+swagger: "2.0"
