@@ -122,7 +122,7 @@ func TestDivide(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			got, err := Divide(tt.a, tt.b)
+			got, err := Divide(tt.a, tt.b, nil)
 
 			if !errors.Is(err, tt.err) {
 				t.Errorf("Divide(%d, %d) error = %v, want %v", tt.a, tt.b, err, tt.err)

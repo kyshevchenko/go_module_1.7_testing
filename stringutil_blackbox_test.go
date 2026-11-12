@@ -37,7 +37,7 @@ func TestAddBlackbox(t *testing.T) {
 
 // TestDivideBlackbox — чёрный ящик: деление, включая ошибку деления на ноль.
 func TestDivideBlackbox(t *testing.T) {
-	got, err := stringutil.Divide(6, 3)
+	got, err := stringutil.Divide(6, 3, nil)
 	if err != nil {
 		t.Fatalf("stringutil.Divide(6, 3) unexpected error: %v", err)
 	}
@@ -45,7 +45,7 @@ func TestDivideBlackbox(t *testing.T) {
 		t.Errorf("stringutil.Divide(6, 3) = %d, want 2", got)
 	}
 
-	_, err = stringutil.Divide(1, 0)
+	_, err = stringutil.Divide(1, 0, nil)
 	if !errors.Is(err, stringutil.ErrDivisionByZero) {
 		t.Errorf("stringutil.Divide(1, 0) error = %v, want %v", err, stringutil.ErrDivisionByZero)
 	}

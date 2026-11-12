@@ -3,6 +3,7 @@ package stringutil
 
 import (
 	"errors"
+	"fmt"
 	"sync"
 )
 
@@ -35,8 +36,12 @@ func Add(a, b int) int {
 }
 
 // Divide делит a на b и возвращает ошибку при делении на ноль.
-func Divide(a, b int) (int, error) {
+// Логгер опционален: nil отключает логирование.
+func Divide(a, b int, log Logger) (int, error) {
 	if b == 0 {
+		if log != nil {
+			log.Error(fmt.Sprintf("division by zero attempt: %d / %d", a, b))
+		}
 		return 0, ErrDivisionByZero
 	}
 	return a / b, nil
