@@ -1,0 +1,16 @@
+# Конфигурация golangci-lint для stringutil (Задание 6).
+# Минимальный набор линтеров из задания.
+version: "2"
+
+run:
+  timeout: 2m
+
+linters:
+  enable:
+    - errcheck      # незамеченные возвращённые ошибки
+    - govet         # подозрительные конструкции (аналог go vet)
+    - staticcheck   # набор классических проверок (gosimple и stylecheck входят)
+    - unused        # неиспользуемые функции, переменные, поля
+    - ineffassign   # присваивания, не имеющие эффекта
+    # typecheck в v2 встроен и выполняется всегда
+    # gosimple входит в staticcheck начиная с v2 (S-правила)
